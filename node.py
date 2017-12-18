@@ -9,6 +9,7 @@ from block import Block
 import sys
 import atexit
 import property
+import pow
 
 
 def _to_url(pair):
@@ -25,8 +26,8 @@ def _to_url(pair):
 # No port provided, show error message and quit
 if len(sys.argv) != 2:
 	print("Usage:")
-	print("python {}.py <port>".format(sys.argv[0]))
-	print("Example:\npython {}.py 8080".format(sys.argv[0]))
+	print("python {} <port>".format(sys.argv[0]))
+	print("Example:\npython {} 8080".format(sys.argv[0]))
 	sys.exit(0)
 
 this_pair = ("localhost", int(sys.argv[1]))
@@ -40,30 +41,10 @@ miner_address = _to_url(this_pair)
 
 
 def _proof_of_work(previous_hash):
-	"""
-	Uses `previous_hash` to solve for a `nonce`, where the resulting
-		hash starts with a number of zero bits ( NUM_ZEROES ).
-
-	Returns
-		nonce : int
-	"""
-	nonce = None
-	incrementor = 0
-	NUM_ZEROES = 5
-
-	# increment nonce until solution is found
-	while not nonce:
-		sha = hashlib.sha256()
-		sha.update(
-			str(previous_hash).encode('utf-8') +
-			str(incrementor).encode('utf-8')
-		)
-		challenge_hash = sha.hexdigest()
-		if str(challenge_hash[:NUM_ZEROES]) == '0' * NUM_ZEROES:
-			nonce = incrementor
-		else:
-			incrementor += 1
-	return nonce
+	strategy = ProofOfWork()
+	# strategy = ProofOfWork(execute_alternate1)
+	return strategy.execute()
+	
 
 
 def _find_new_chains():
