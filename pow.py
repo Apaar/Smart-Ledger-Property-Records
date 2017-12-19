@@ -1,12 +1,13 @@
 import types
 import hashlib
 
+
 class ProofOfWork:
 	def __init__(self, func=None):
 		if func is not None:
 			self.execute = types.MethodType(func, self)
 
-	def execute(self):
+	def execute(self, previous_hash):
 		"""
 		Uses `previous_hash` to solve for a `nonce`, where the resulting
 			hash starts with a number of zero bits ( NUM_ZEROES ).
@@ -32,7 +33,8 @@ class ProofOfWork:
 				incrementor += 1
 		return nonce
 
-def execute_alternate1(self):
+
+def execute_alternate1(self, previous_hash):
 	print('Alternate Proof of Work 1')
 	nonce = None
 	incrementor = 0
@@ -49,4 +51,3 @@ def execute_alternate1(self):
 		else:
 			incrementor += 1
 	return nonce
-

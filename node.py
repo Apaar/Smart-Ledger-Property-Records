@@ -3,13 +3,12 @@ from flask import request
 import requests
 import json
 import datetime
-import hashlib
 from requests.exceptions import ConnectionError
 from block import Block
 import sys
 import atexit
 import property
-import pow
+from pow import ProofOfWork
 
 
 def _to_url(pair):
@@ -43,8 +42,7 @@ miner_address = _to_url(this_pair)
 def _proof_of_work(previous_hash):
 	strategy = ProofOfWork()
 	# strategy = ProofOfWork(execute_alternate1)
-	return strategy.execute()
-	
+	return strategy.execute(previous_hash)
 
 
 def _find_new_chains():
